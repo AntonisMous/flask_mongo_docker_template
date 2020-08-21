@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+    mongodb:
+        image: mongo:latest
+        container_name: we_energy_mongo
+        restart: unless-stopped
+
+    flask:
+        build: .
+        command: gunicorn --bind 0.0.0.0:5000 --timeout 600 --threads 10 manage:app run
+        ports:
+            - "5000:5000"
+        depends_on:
+            - mongodb
+
